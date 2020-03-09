@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './components/App'
 
-import {createContext} from 'react'
+import {SmurfContext} from './context/SmurfContext'
 
-const smurfContext = createContext()
-
-ReactDOM.render(<App/>, document.getElementById('root'))
+ReactDOM.render(
+    <SmurfContext.Provider value={smurfs}>
+      <App/>
+    </SmurfContext.Provider>,
+    document.getElementById('root'))
