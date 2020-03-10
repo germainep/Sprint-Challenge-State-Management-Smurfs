@@ -1,3 +1,38 @@
-import {createContext} from 'react'
+import React, {createContext, useReducer, useEffect} from 'react'
+import axios from 'axios'
+import SmurfReducer from '../reducers/SmurfReducer'
 
-export const SmurfContext = createContext()
+const initialState = {
+  loading: true,
+  error: '',
+  smurfs: []
+}
+
+export const SmurfContext = createContext(initialState)
+
+export const SmurfContextProvider = ({children}) => {
+  const [state, dispatch] = useReducer(SmurfReducer, initialState)
+
+  useEffect(() => {
+    axios
+        .get('http://localhost:3333/smurfs')
+        .then(res => {
+          dispatch({type: 'GOT_SMURFS', payload: res.data})
+        })
+        .catch(err => {
+          dispatch({type: 'FETCH_ERROR', payload: err.message})
+        })
+  }, [])
+
+
+  // Actions
+  const addSmurf = (smurf) => {
+    dispatch({type: 'ADD_SMURF', payload: smurf})
+  }
+
+  return (
+      <SmurfContext.Provider value={{smurfs: state.smurfs, addSmurf}}>
+        {children}
+      </SmurfContext.Provider>
+  )
+}
