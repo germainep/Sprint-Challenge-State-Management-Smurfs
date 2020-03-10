@@ -16,7 +16,7 @@ export default (state, action) => {
       }
 
     case 'ADD_SMURF':
-      return [...state, action.payload]
+      return [...state.smurfs, action.payload]
     default:
       return state
   }

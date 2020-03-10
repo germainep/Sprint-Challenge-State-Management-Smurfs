@@ -26,9 +26,17 @@ export const SmurfContextProvider = ({children}) => {
 
 
   // Actions
-  const addSmurf = (smurf) => {
-    dispatch({type: 'ADD_SMURF', payload: smurf})
-  }
+const addSmurf = (smurf) => {
+  axios
+      .post('http://localhost:3333/smurfs', smurf)
+      .then(res => {
+        dispatch({type: 'ADD_SMURF', payload: smurf})
+      })
+      .catch(err => {
+        console.log()
+        dispatch({type: 'POST_ERROR', payload: err.message})
+      })
+}
 
   return (
       <SmurfContext.Provider value={{smurfs: state.smurfs, addSmurf}}>
